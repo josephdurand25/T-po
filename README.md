@@ -49,4 +49,17 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 ### ma command artisan
 
-$signature = 'app:create-controllers';
+$signature = 'app:create-controllers'
+
+### les liens qu'il doit avoir 
+Alerts
+Alimentation
+Employes
+Finances
+Fournisseurs
+Production
+Rapports
+Sante
+Sujets
+Ventes
+Vues

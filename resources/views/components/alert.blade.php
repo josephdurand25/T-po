@@ -1,4 +1,4 @@
-<div class="bg-{{ ($type=='success') ? 'green' : 'red' }}-300 p-5 w-full m-1 rounded" id="success-message">
+<div class="bg-{{ ($type=='success') ? 'green' : 'red' }}-400 p-5 w-full m-1 rounded" id="success-message">
     <div class="flex justify-between">
     <div class="flex space-x-3">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-{{ ($type === 'success') ? 'green' : 'red' }}-500 h-4 w-4">

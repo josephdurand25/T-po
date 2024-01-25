@@ -64,19 +64,23 @@ use Illuminate\Support\Facades\View;
 Route::prefix('admin')->name('admin.')->group(function () {    
     $vues = Vue::where('published', true)->get();
     View::share('vues', $vues);
+    
     Route::view('/','admin.dashboard')->name('dashboard');
     foreach (File::directories(resource_path('views/admin/pages')) as $directory) {
         $prefix = basename($directory).'/';
         $controller = 'App\\Http\\Controllers\\Admin\\' . ucfirst(basename($directory)) . 'Controller';
-        Route::prefix($prefix)->name(basename($directory))->group(function () use ($controller, $prefix) {
+        $model = basename($directory) ;
+        Route::prefix($prefix)->name(basename($directory))->group(function () use ($controller, $model) {
             Route::resource('/', $controller)->names([
                 'index' => '.index',
                 'create' => '.create',
                 'store' => '.add',
-                // 'show' => 'admin.'.$prefix.'show',
+                'show' => '.show',
                 'edit' => '.edit',
                 'update' => '.update', 
-                'destroy' => '.destroy',
+                'destroy' => '.delete',
+            ])->parameters([
+                '' => rtrim($model,'s') 
             ]);
         });
     }

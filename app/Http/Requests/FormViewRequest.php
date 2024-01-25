@@ -23,9 +23,9 @@ class FormViewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_view' => ['required','max:20'],
-            'view_page' => ['required','max:50', Rule::unique('vues')->ignore($this->route()->parameter('vues'))],
-            'view_folder' => ['required','max:30'],
+            'name_view' => ['required','max:20',Rule::unique('vues')->ignore($this->route()->parameter('vues'))],
+            'view_page' => ['required','max:50'],
+            'view_folder' => ['required','max:30',Rule::unique('vues')->ignore($this->route()->parameter('vues'))],
             'icon_view' => ['required','max:150'],
            
         ];
@@ -45,5 +45,25 @@ class FormViewRequest extends FormRequest
             'icon_view.max' => 'Le code de l\'icone ne doit pas dépasser 15 caractères.',
             
         ];
+    }
+    
+
+    protected function prepareForValidation(){
+        $icons = [
+            'dashboard' => 'fa-tachometer-alt',
+            'abouts' => 'fa-circle-info',
+            'users' => 'fa-users',
+            'services' => 'fa-service-stack',
+            'settings' => 'fa-cogs',
+            'produits' => 'fa-product-hunt',
+            'sujets'=>"fa-kiwi-bird",
+            'vues'=>"fa-link"
+            // Ajoutez plus d'icônes ici
+        ];
+        $this->merge([
+            'icon_view'=>$this->input('icon_view') ?:  $icons[$this->input('name_view')] ?? 'fa-question',
+            'view_page'=>'index',
+            'view_folder'=>$this->input('name_view')
+        ]);
     }
 }

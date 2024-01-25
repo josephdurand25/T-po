@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vues', function (Blueprint $table) {
-            $table->id('id_view');
+            $table->id();
             $table->string('name_view', 40);
             $table->string('ico_view', 150);
             $table->string('view_page', 30);

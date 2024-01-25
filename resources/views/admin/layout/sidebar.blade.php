@@ -58,13 +58,13 @@
               @endforelse --}}
               @forelse ($vues as $vue ) 
               <li>
-                <a href="{{ route('admin.'.$vue->view_folder.$vue->view_page) }}" class="capitalize {{ (Str::startsWith(Route::currentRouteName() , 'admin.'.$vue->view_folder)) ? 'bg-graydark dark:bg-meta-4': '' }}  group  relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"  >
+                <a href="{{ route('admin.'.$vue->view_folder.'.'.$vue->view_page) }}" class="capitalize {{ (Str::startsWith(Route::currentRouteName() , 'admin.'.$vue->view_folder)) ? 'bg-graydark dark:bg-meta-4': '' }}  group  relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"  >
                   <i class="fa-solid {{ $vue->ico_view }} w-[18px] h-[18px]"></i>  
                   {{ $vue->name_view }}
                 </a>
             </li>
           @empty
-              <h3>Aucune navigation</h3>
+              <h3>Aucune Menu disponible</h3>
           @endforelse
           
             <!-- Menu Item view pages -->

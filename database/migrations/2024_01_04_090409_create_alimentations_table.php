@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fournisseurs', function (Blueprint $table) {
+        Schema::create('alimentations', function (Blueprint $table) {
             $table->id();
+            $table->enum('type_aliment', ['démarage', 'croissance','finition']);
+            $table->smallInteger('nbre_sac');
+            $table->Integer('prix_unitaire');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fournisseurs');
+        Schema::dropIfExists('alimentations');
     }
 };

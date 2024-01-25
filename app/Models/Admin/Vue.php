@@ -9,6 +9,5 @@ class Vue extends Model
 {
     use HasFactory;
     protected $table = 'vues';
-    protected $primaryKey = 'id_view';
     protected $guarded = [];
 }

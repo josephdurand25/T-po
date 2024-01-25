@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormViewRequest;
-use App\Models\Admin\Vues;
-use Illuminate\Http\Request;
+use App\Models\Admin\Vue;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class VuesController extends Controller
@@ -14,6 +14,11 @@ class VuesController extends Controller
     {
         //
         return view('admin.pages.vues.index');
+    }
+    public function show()
+    {
+        //
+        
     }
 
     // public function store(FormViewRequest $request)
@@ -59,11 +64,11 @@ class VuesController extends Controller
     public function store(FormViewRequest $request)
     {
         $validateData = $request->validated();
-        $vue = new Vues;
-        $vue->name_view = $validateData['name_view'];
-        $vue->ico_view = $validateData['icon_view'];
-        $vue->view_page = $validateData['view_page'].'.';
-        $vue->view_folder = $validateData['view_folder'];
+        $vue = new Vue;
+        $vue->name_view = strtolower($validateData['name_view']);
+        $vue->ico_view = strtolower($validateData['icon_view']);
+        $vue->view_page = strtolower($validateData['view_page']);
+        $vue->view_folder = strtolower($validateData['view_folder']);
 
         $nomDuFichier = $vue->view_page . '.blade.php';
         $cheminDuDossier = resource_path('views/admin/pages/' . $validateData['view_folder']);
@@ -76,25 +81,30 @@ class VuesController extends Controller
             $cheminDuFichier = $cheminDuDossier . '/' . $nomDuFichier;
 
         // Créez le fichier
+        $base = "<x-Admin.app-layout>
+                    $vue->name_view
+                </x-Admin.app-layout>";
             $fichier = fopen($cheminDuFichier, 'w');
 
         if ($fichier) {
+            fwrite($fichier, $base);
             fclose($fichier);
             $result = $vue->save();
             if($result){
                 Artisan::call('app:create-controllers');
                 Artisan::call('app:create-models');
-                return redirect()->back()->with('success', 'La vue a été enregistrée et créée avec succès.') ;
+                return redirect()->back()->with('success', "Vue $vue->name_view créée avec succès.") ;
             }else{
-                return redirect()->back()->with('echec', 'La vue n\'a pas été enregistrée.');
+                return redirect()->back()->with('echec', "La création de la vue $vue->name_view a échoué à cause d'un problème avec la génération du fichier de vue associé.");
             }
         } else {
-            return redirect()->back()->with('echec', 'La vue n\'a pas été créée.');
+            return redirect()->back()->with('echec', "Echec de création de la vue $vue->name_view.");
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(Vue $vue)
     {
         //
+        return $vue;
     }
 }

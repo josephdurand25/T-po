@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Admin\Vue;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CreateViews extends Command
 {
@@ -28,29 +30,44 @@ class CreateViews extends Command
     public function handle()
     {
         //
+        $out = new ConsoleOutput;
         $directories = glob(resource_path('views/admin/pages/*'), GLOB_ONLYDIR);
 
         $icons = [
             'dashboard' => 'fa-tachometer-alt',
+            'abouts' => 'fa-circle-info',
             'users' => 'fa-users',
+            'services' => 'fa-service-stack',
             'settings' => 'fa-cogs',
-            'sujets'=>"fa-kiwi-bird"
+            'produits' => 'fa-product-hunt',
+            'sujets'=>"fa-kiwi-bird",
+            'vues'=>"fa-link"
             // Ajoutez plus d'icônes ici
         ];
-        // <i class="fa-solid fa-question"></i>
+
         foreach ($directories as $directory) {
             $viewName = basename($directory);
             $viewFolder = basename($directory);
             $viewPage = '.index'; // Supposons que chaque vue a une page 'index'
             $icon = $icons[$viewFolder] ?? 'fa-solid fa-question'; // Utilisez une icône par défaut si aucune icône n'est définie pour cette vue
-
-            DB::table('vues')->insert([
-                'name_view' => $viewName,
-                'ico_view' => $icon,
-                'view_page' => $viewPage,
-                'view_folder' => $viewFolder,
-                'published' => true,
-            ]);
+            
+            $vues = Vue::where('published', true)->pluck('name_view');
+            if (!$vues->contains($viewName)) {
+                # code...
+                DB::table('vues')->insert([
+                    'name_view' => $viewName,
+                    'ico_view' => $icon,
+                    'view_page' => $viewPage,
+                    'view_folder' => $viewFolder,
+                    'published' => true,
+                ]);
+                $out->writeln("Vue $viewName remplie !");
+            } else {
+                # code...
+                $out->writeln("Vue $viewName déjà crée !");
+            }
+            
         }
+        $out->writeln("Remplissage des vues terminé !");
     }
 }

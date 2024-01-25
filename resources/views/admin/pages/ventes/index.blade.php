@@ -1,3 +1,3 @@
 <x-Admin.app-layout>
-                    sujets
+                    ventes
                 </x-Admin.app-layout>
